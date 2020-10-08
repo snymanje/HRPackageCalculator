@@ -76,9 +76,10 @@ function updateCalculator() {
 }
 
 document.getElementById("newContributionPerc").addEventListener("change", updateCalculator);
+document.getElementById("basicSalary").addEventListener("keydown", updateCalculator);
 document.getElementById("basicSalary").addEventListener("change", updateCalculator);
 document.getElementById("companyMedicalContribution").addEventListener("change", updateCalculator);
-
+document.getElementById("companyMedicalContribution").addEventListener("keydown", updateCalculator);
 
 /* function calculateCurrentContribution(event) {
   const basicSalary = event.target.value;

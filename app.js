@@ -1,18 +1,18 @@
 function calculateTaxable(basicSalary, myCurrentRetirementContribution, newContributionPerc, companyMedicalContribution) {
   //console.log(basicSalary, newContributionPerc, companyMedicalContribution)
-  const oldTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * 7.5 )) * 12;
-  const newTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * Number(newContributionPerc))) * 12;
+  var oldTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * 7.5 )) * 12;
+  var newTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * Number(newContributionPerc))) * 12;
   return {
-    oldTaxable, 
-    newTaxable
+    oldTaxable: oldTaxable, 
+    newTaxable: newTaxable
    }
 }
 
 function calculateTax(basicSalary) {
-  let fixed = 0;
-  let percentage = 0;
-  let rebate = 14958;
-  let netPay = 0
+  var fixed = 0;
+  var percentage = 0;
+  var rebate = 14958;
+  var netPay = 0
   if(basicSalary >= 0 && basicSalary <= 205900) {
     fixed = 0;
     percentage = 18;
@@ -47,30 +47,30 @@ function calculateTax(basicSalary) {
 }
 
 function updateCalculator() {
-  const basicSalary = document.getElementById("basicSalary").value || 0;
+  var basicSalary = document.getElementById("basicSalary").value || 0;
   console.log('Basic Salary: ' + basicSalary)
 
-  const companyMedicalContribution = document.getElementById("companyMedicalContribution").value || 0
+  var companyMedicalContribution = document.getElementById("companyMedicalContribution").value || 0
   console.log('Company Medical Contribution: ' + companyMedicalContribution)
 
-  const myCurrentRetirementContribution = (basicSalary * 7.5 / 100).toFixed(2);
+  var myCurrentRetirementContribution = (basicSalary * 7.5 / 100).toFixed(2);
   console.log('Current Retirement Contribution: ' + myCurrentRetirementContribution)
 
-  const newContributionPerc = document.getElementById("newContributionPerc").value || 0
+  var newContributionPerc = document.getElementById("newContributionPerc").value || 0
   console.log('New Retirement Contribution %: ' + newContributionPerc)
 
-  const myNewContribution = (basicSalary * newContributionPerc / 100 ) || 0;
+  var myNewContribution = (basicSalary * newContributionPerc / 100 ) || 0;
   console.log('New Contribution: ' + myNewContribution)
 
   document.getElementById("myCurrentRetirementContribution").value = (basicSalary * 7.5 / 100).toFixed(2);
   document.getElementById("myNewContribution").innerHTML = 'R '+ myNewContribution.toFixed(2);
   document.getElementById("changeInContribution").innerHTML = 'R ' + (myNewContribution - myCurrentRetirementContribution).toFixed(2);
 
-  const taxable = calculateTaxable(basicSalary, myCurrentRetirementContribution, newContributionPerc, companyMedicalContribution);
-  const newTaxableResult = calculateTax(taxable.newTaxable);
-  const oldTaxableResult = calculateTax(taxable.oldTaxable);
+  var taxable = calculateTaxable(basicSalary, myCurrentRetirementContribution, newContributionPerc, companyMedicalContribution);
+  var newTaxableResult = calculateTax(taxable.newTaxable);
+  var oldTaxableResult = calculateTax(taxable.oldTaxable);
 
-  const changeInNet = (Number(basicSalary * newContributionPerc / 100) - (Number(basicSalary) / 100 * 7.5 ));
+  var changeInNet = (Number(basicSalary * newContributionPerc / 100) - (Number(basicSalary) / 100 * 7.5 ));
 
   document.getElementById("changeInNetPay").innerHTML = 'R ' + ((Number(newTaxableResult - oldTaxableResult) + Number(changeInNet))).toFixed(2);
 }
@@ -80,59 +80,4 @@ document.getElementById("basicSalary").addEventListener("keydown", updateCalcula
 document.getElementById("basicSalary").addEventListener("change", updateCalculator);
 document.getElementById("companyMedicalContribution").addEventListener("change", updateCalculator);
 document.getElementById("companyMedicalContribution").addEventListener("keydown", updateCalculator);
-
-/* function calculateCurrentContribution(event) {
-  const basicSalary = event.target.value;
-  document.getElementById("myCurrentMedicalContribution").value = (basicSalary * 7.5 / 100).toFixed(2);
-
-  const companyMedicalContribution = document.getElementById("companyMedicalContribution").value
-  const myCurrentMedicalContribution = document.getElementById("myCurrentMedicalContribution").value
-  const newContributionPerc = document.getElementById("newContributionPerc").value
-  const myNewContribution = (basicSalary * newContributionPerc / 100 );
-  document.getElementById("myNewContribution").innerHTML = 'R '+ myNewContribution.toFixed(2);
-  document.getElementById("changeInContribution").innerHTML = 'R ' + (myNewContribution - myCurrentMedicalContribution).toFixed(2);
-
-  const taxable = calculateTaxable(basicSalary, myCurrentMedicalContribution, newContributionPerc, companyMedicalContribution);
-  const newTaxableResult = calculateTax(taxable.newTaxable);
-  const oldTaxableResult = calculateTax(taxable.oldTaxable);
-
-  const changeInNet = (Number(basicSalary * newContributionPerc / 100) - (Number(basicSalary) / 100 * 7.5 ));
-  console.log(changeInNet);
-  document.getElementById("changeInNetPay").innerHTML = 'R ' + ((Number(newTaxableResult - oldTaxableResult) + Number(changeInNet))).toFixed(2);
-}
-
-function calculateNewContribution(event) {
-  const basicSalary = document.getElementById("basicSalary").value
-  const myCurrentMedicalContribution = document.getElementById("myCurrentMedicalContribution").value
-  const myNewContribution = (basicSalary * event.target.value / 100 );
-  const newContributionPerc = document.getElementById("newContributionPerc").value
-  const companyMedicalContribution = document.getElementById("companyMedicalContribution").value
-
-  document.getElementById("myNewContribution").innerHTML = 'R '+ myNewContribution.toFixed(2);
-  document.getElementById("changeInContribution").innerHTML = 'R ' + (myNewContribution - myCurrentMedicalContribution).toFixed(2);
-  
-  const taxable = calculateTaxable(basicSalary, myCurrentMedicalContribution, newContributionPerc, companyMedicalContribution);
-  const newTaxableResult = calculateTax(taxable.newTaxable);
-  const oldTaxableResult = calculateTax(taxable.oldTaxable);
-
-  const changeInNet = (Number(basicSalary * newContributionPerc / 100) - (Number(basicSalary) / 100 * 7.5 ));
-
-  document.getElementById("changeInNetPay").innerHTML = 'R ' + ((Number(newTaxableResult - oldTaxableResult) + Number(changeInNet))).toFixed(2);
-} */
-
-
-/* function updateNetPay(event)  {
-  const basicSalary = document.getElementById("basicSalary").value
-  const myCurrentMedicalContribution = document.getElementById("myCurrentMedicalContribution").value
-  const newContributionPerc = document.getElementById("newContributionPerc").value
-  const companyMedicalContribution = document.getElementById("companyMedicalContribution").value
-  
-  const taxable = calculateTaxable(basicSalary, myCurrentMedicalContribution, newContributionPerc, companyMedicalContribution);
-  const newTaxableResult = calculateTax(taxable.newTaxable);
-  const oldTaxableResult = calculateTax(taxable.oldTaxable);
-
-  const changeInNet = (Number(basicSalary * newContributionPerc / 100) - (Number(basicSalary) / 100 * 7.5 ));
-
-  document.getElementById("changeInNetPay").innerHTML = 'R ' + ((Number(newTaxableResult - oldTaxableResult) + Number(changeInNet))).toFixed(2);
-} */
 

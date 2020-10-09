@@ -1,4 +1,4 @@
-function calculateTaxable(basicSalary, myCurrentRetirementContribution, newContributionPerc, companyMedicalContribution) {
+function calculateTaxable(basicSalary, newContributionPerc, companyMedicalContribution) {
   //console.log(basicSalary, newContributionPerc, companyMedicalContribution)
   var oldTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * 7.5 )) * 12;
   var newTaxable = (Number(basicSalary) + Number(companyMedicalContribution) - (Number(basicSalary) / 100 * Number(newContributionPerc))) * 12;
@@ -66,7 +66,7 @@ function updateCalculator() {
   document.getElementById("myNewContribution").innerHTML = 'R '+ myNewContribution.toFixed(2);
   document.getElementById("changeInContribution").innerHTML = 'R ' + (myNewContribution - myCurrentRetirementContribution).toFixed(2);
 
-  var taxable = calculateTaxable(basicSalary, myCurrentRetirementContribution, newContributionPerc, companyMedicalContribution);
+  var taxable = calculateTaxable(basicSalary, newContributionPerc, companyMedicalContribution);
   var newTaxableResult = calculateTax(taxable.newTaxable);
   var oldTaxableResult = calculateTax(taxable.oldTaxable);
 
